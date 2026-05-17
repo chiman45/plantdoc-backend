@@ -94,18 +94,15 @@ async def predict(file: UploadFile = File(...)):
     result_index = np.argmax(predictions)
     confidence = float(np.max(predictions))
 
-    # 5. Check model confidence
+    warning = None
     if confidence < CONFIDENCE_THRESHOLD:
-        return {
-            "error": "Could not confidently identify a plant disease. Please upload a clearer, closer photo of the leaf.",
-            "disease": None,
-            "confidence": round(confidence * 100, 2)
-        }
+        warning = "Low confidence result. For better accuracy, upload a clearer, closer photo of the leaf."
 
     return {
         "disease": CLASS_NAMES[result_index],
         "confidence": round(confidence * 100, 2),
-        "error": None
+        "error": None,
+        "warning": warning
     }
 
 @app.post("/chat")
