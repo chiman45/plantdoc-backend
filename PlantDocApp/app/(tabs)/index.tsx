@@ -89,22 +89,24 @@ export default function HomeScreen() {
 
         {loading && <ActivityIndicator size="large" color="#4ade80" style={{marginTop: 20}}/>}
 
-        {result && (
-          <View style={styles.resultCard}>
-            <Text style={styles.resultTitle}>Detection Result</Text>
-            {result.error ? (
-              <Text style={styles.errorText}>{result.error}</Text>
-            ) : (
-              <>
-                <Text style={styles.diseaseName}>{result.disease}</Text>
-                <Text style={styles.confidence}>Confidence: {result.confidence}%</Text>
-                {result.warning && (
-                  <Text style={styles.warningText}>⚠️ {result.warning}</Text>
-                )}
-              </>
-            )}
-          </View>
-        )}
+
+       {result && (
+  <View style={styles.resultCard}>
+    <Text style={styles.resultTitle}>Detection Result</Text>
+    {result.confidence < 40 ? (
+      <View style={styles.warningBox}>
+        <Text style={styles.warningText}>⚠️ Low Confidence!</Text>
+        <Text style={styles.warningSubText}>Please upload a clear plant leaf image for accurate results.</Text>
+      </View>
+    ) : (
+      <>
+        <Text style={styles.diseaseName}>{result.disease}</Text>
+        <Text style={styles.confidence}>Confidence: {result.confidence}%</Text>
+      </>
+    )}
+  </View>
+)}
+
       </ScrollView>
     </View>
   );
@@ -141,6 +143,21 @@ const styles = StyleSheet.create({
   resultTitle: { color: '#6b7280', fontSize: 13, marginBottom: 8 },
   diseaseName: { color: '#e5e7eb', fontSize: 20, fontWeight: 'bold', marginBottom: 4 },
   confidence: { color: '#4ade80', fontSize: 14 },
-  errorText: { color: '#f87171', fontSize: 15, marginTop: 4 },
-  warningText: { color: '#fbbf24', fontSize: 13, marginTop: 8 },
+
+   warningBox: {
+  backgroundColor: '#3a1e1e',
+  borderRadius: 10,
+  padding: 12,
+},
+warningText: {
+  color: '#f87171',
+  fontSize: 16,
+  fontWeight: 'bold',
+  marginBottom: 4,
+},
+warningSubText: {
+  color: '#fca5a5',
+  fontSize: 13,
+  lineHeight: 18,
+},
 });
